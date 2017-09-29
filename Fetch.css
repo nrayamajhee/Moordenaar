@@ -1,0 +1,97 @@
+body {
+    margin: 0;
+    width: 100vw;
+    height: 100vh;
+    background: radial-gradient(circle at top right,
+        white, SkyBlue, DeepSkyBlue, Teal);
+}
+
+body * {
+    /*text-shadow: -1px 1px 5px rgba(0,0,0,0.5);
+    box-shadow: -10px 10px 0 rgba(0,0,0,0.1);
+    filter: drop-shadow(-10px 10px 5px black);*/
+}
+world {
+    width: 960px;
+    height: 640px;
+    display: block;
+    background: transparent;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transform-style: preserve-3d;
+    perspective: 200px;
+}
+sky {
+    background: linear-gradient(SkyBlue, transparent);
+    opacity: 0.5;
+    display: block;
+    width: 100%;
+    height: 640px;
+    transform: translateZ(20px);
+}
+ground {
+    position: absolute;
+    width: 960px;
+    height: 80px;
+    bottom: -40px;
+    box-sizing: border-box;
+    background: DarkGreen;
+    opacity: 0.5;
+    transform: rotateX(90deg);
+}
+player {
+    width: 20px;
+    height: 50px;
+    background: Bisque ;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    z-index: 10;
+    transform: translateZ(25px);
+    transition: bottom 0.4s, left 0.4s;
+}
+player.collided {
+    background: red ;
+}
+building {
+    width: 500px;
+    height: 500px;
+    background: DarkSalmon;
+    position: absolute;
+    right: 50px;
+    bottom: 0;
+    z-index: 1;
+    transform: translateZ(20px);
+    transform-style: preserve-3d;
+    perspective: 100px;
+}
+stairs {
+    position: absolute;
+    content: '';
+    width: 200px;
+    left: -300px;
+    height: 500px;
+    background: DarkSalmon;
+    transform: translateZ(-5px);
+}
+controls {
+    position: fixed;
+    top: 50px;
+    right: 50px;
+    z-index: 10;
+}
+button {
+    color: DarkSkyBlue;
+    border: 2px solid white;
+    padding: 10px 20px;
+    margin: 0;
+    background: transparent;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+button:hover {
+    background: white;
+    color: black;
+}
