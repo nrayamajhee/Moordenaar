@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Character Animation</title>
+        <style>
+            body {
+                margin: 0;
+                width: 100vw;
+                height: 100vh;
+                position: relative;
+                background: radial-gradient(circle at top right, #F6D08D, #E68633, #587EBD);
+            }
+            /* custom html tags */
+            face, torso, hand, palm, leg, foot {
+                display: block;
+                border-radius: 20px;
+                box-shadow: 0 0 10px black;
+            }
+            man {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 50px;
+                height: 500px;
+            }
+            face{
+                width: 100%;
+                height: 15%;
+                background: Wheat;
+            }
+            torso {
+                width: 75px;
+                height: 35%;
+                margin-left: -25%;
+                background: white;
+            }
+            hand, leg {
+                background: Wheat;
+                position: absolute;
+                transition: transform 1s;
+            }
+            hand {
+                width: 30px;
+                height: 40%;
+                left: 10px;
+            }
+            leg {
+                margin-top: -30px;
+                width: 40px;
+                height: 55%;
+                left: 5px;
+            }
+            .left {
+                transform: rotate(20deg);
+                transform-origin: top center;
+                z-index: -1;
+            }
+            .right {
+                transform: rotate(-20deg);
+                transform-origin: top center;
+            }
+            man:hover .left {
+                transform: rotate(-20deg);
+            }
+            man:hover .right {
+                transform: rotate(20deg);
+            }
+        </style>
+    </head>
+    <body>
+        <man>
+            <face>
+            </face>
+            <hand class="left">
+            </hand>
+            <hand class="right">
+            </hand>
+            <torso>
+            </torso>
+            <leg class="left">
+            </leg>
+            <leg class="right">
+            </leg>
+        </man>
+    </body>
+</html>
