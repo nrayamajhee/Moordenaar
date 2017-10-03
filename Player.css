@@ -1,0 +1,55 @@
+/*styling the player model*/
+face, torso, hand, leg, foot {
+    display: block;
+    border-radius: 0.5em;
+}
+player * {
+    box-shadow: -5px 5px 10px rgba(0,0,0,0.5);
+}
+player {
+    position: absolute;
+    display: block;
+    left: 20%;
+    width: 50px;
+    height: 100px;
+    transform: translateZ(50px);
+}
+face{
+    width: 30%;
+    height: 20%;
+    margin-left: 35%;
+    background: Wheat;
+}
+torso {
+    width: 40%;
+    margin-left: 30%;
+    height: 35%;
+    background: white;
+}
+hand, leg {
+    background: Wheat;
+    position: absolute;
+    /*transition: transform 1s;*/
+}
+hand {
+    width: 10%;
+    height: 40%;
+    left: 45%;
+    top: 25%;
+    z-index: 2;
+}
+leg {
+    margin-top: -80%;
+    width: 20%;
+    height: 50%;
+    bottom: 0;
+    left: 40%;
+}
+.left {
+    transform-origin: top center;
+    z-index: -1;
+    /*transition: transform 0.4s;*/
+}
+.right {
+    transform-origin: top center;
+}
