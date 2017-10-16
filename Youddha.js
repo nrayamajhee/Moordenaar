@@ -1,5 +1,5 @@
-/*jslint browser:true */
 /*jslint devel: true*/
+/*jslint browser: true*/
 
 var world = document.querySelector("world");
 var sky = document.querySelector("sky");
@@ -10,12 +10,17 @@ var hero = {
     x: 100,
     y: 0,
     speed: 256,
+    deg: 0,
     frame: 0
 };
 
+// Handle keyboard controls
+var keysDown = {};
+var aim = false;
+
 var toggleFullScreen = function () {
     'use strict';
-    if (!document.fullscreenElement) {
+    if (!document.fullscreen) {
         document.documentElement.requestFullscreen();
     } else if (document.exitFullscreen) {
         document.exitFullscreen();
@@ -28,16 +33,12 @@ var movePerspective = function (e) {
 
     panLeft = e.clientX / document.documentElement.clientWidth * 100;
     panRight = (e.clientY / document.documentElement.clientHeight * 100) + 20;
-    // deg = Math.atan((e.clientY - player.offsetTop) / (e.clientX - player.offsetLeft)) / (Math.PI / 180);
-    console.log(deg);
+    player.deg = Math.atan((e.clientY - player.offsetTop) / (e.clientX - player.offsetLeft)) / (Math.PI / 180);
+    aim = true;
 
     world.style.perspectiveOrigin = panLeft + "% " + panRight + "%";
-    // limbs[0].style.transform = 'rotate(' + deg + 'deg)';
-    // limbs[1].style.transform = 'rotate(' + deg + 'deg)';
 };
 
-// Handle keyboard controls
-var keysDown = {};
 
 window.addEventListener("keydown", function (e) {
     'use strict';
@@ -54,7 +55,6 @@ window.addEventListener("keyup", function (e) {
 
 window.addEventListener('mousemove', movePerspective, false);
 
-var deg = 0;
 var toRight = true;
 
 // Update game objects
@@ -74,16 +74,17 @@ var update = function (modifier) {
     }
 
     if (keysDown[39] || keysDown[68] || keysDown[37] || keysDown[65]) {
+        aim = false;
         if (toRight) {
-            deg += 1;
+            player.deg += 1;
         } else {
-            deg -= 1;
+            player.deg -= 1;
         }
-        if (deg < -20 || deg > 20) {
+        if (player.deg < -20 || player.deg > 20) {
             toRight = !toRight;
         }
-    } else {
-        deg = 0;
+    } else if (!aim) {
+        player.deg = 0;
     }
 };
 
@@ -107,10 +108,10 @@ var render = function () {
     'use strict';
     player.style.left = hero.x + 'px';
     player.style.bottom = hero.y + 'px';
-    limbs[0].style.transform = 'rotate(' + deg + 'deg)';
-    limbs[2].style.transform = 'rotate(' + deg + 'deg)';
-    limbs[1].style.transform = 'rotate(' + -deg + 'deg)';
-    limbs[3].style.transform = 'rotate(' + -deg + 'deg)';
+    limbs[0].style.transform = 'rotate(' + player.deg + 'deg)';
+    limbs[2].style.transform = 'rotate(' + player.deg + 'deg)';
+    limbs[1].style.transform = 'rotate(' + -player.deg + 'deg)';
+    limbs[3].style.transform = 'rotate(' + -player.deg + 'deg)';
 };
 
 // Let's play this game!
