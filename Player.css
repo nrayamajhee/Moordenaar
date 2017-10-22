@@ -1,55 +1,63 @@
-/*styling the player model*/
-face, torso, hand, leg, foot {
-    display: block;
-    border-radius: 0.5em;
-}
-player * {
-    box-shadow: -5px 5px 10px rgba(0,0,0,0.5);
-}
 player {
     position: absolute;
-    display: block;
-    left: 20%;
     width: 50px;
     height: 100px;
-    transform: translateZ(50px);
+    z-index: 0;
 }
-face{
-    width: 30%;
+player face {
+    background: pink;
+    width: 50%;
+    height: 30%;
+    margin-left: 25%;
+    border-radius: 40%;
+}
+player face::after {
+    position: absolute;
+    left: 40%;
+    top: 30%;
+    content: '';
+    width: 20%;
     height: 20%;
-    margin-left: 35%;
-    background: Wheat;
-}
-torso {
-    width: 40%;
-    margin-left: 30%;
-    height: 35%;
     background: white;
 }
-hand, leg {
-    background: Wheat;
+player arm, player leg {
     position: absolute;
-    /*transition: transform 1s;*/
+    left: 20%;
+    transform-origin: top center;
 }
-hand {
-    width: 10%;
-    height: 40%;
-    left: 45%;
-    top: 25%;
-    z-index: 2;
+player arm {
+    top: 35%;
+    left: 35%;
+    width: 30%;
+    height: 60%;
+    z-index: 1;
 }
-leg {
-    margin-top: -80%;
-    width: 20%;
+player leg {
+    top: 80%;
+    left: 30%;
+    width: 40%;
+    height: 80%;
+}
+player arm upper, player leg upper, player arm lower, player leg lower {
+    width: 100%;
     height: 50%;
-    bottom: 0;
-    left: 40%;
+    background: blue;
+    border-radius: 10px;
 }
-.left {
+player arm lower, player leg lower {
+    background: pink;
+    margin-left: 10%;
+    width: 80%;
     transform-origin: top center;
+}
+player .left {
     z-index: -1;
-    /*transition: transform 0.4s;*/
 }
-.right {
-    transform-origin: top center;
+player torso {
+    margin-top: 10%;
+    margin-left: 15%;
+    width: 70%;
+    height: 70%;
+    background: white;
+    border-radius: 30%;
 }
