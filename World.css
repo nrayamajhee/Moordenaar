@@ -3,7 +3,6 @@ body {
     overflow: hidden;
 }
 canvas {
+    display: block;
     cursor: none;
-    /*image-rendering: pixelated;
-    image-rendering: -moz-crisp-edges;*/
 }
