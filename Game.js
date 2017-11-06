@@ -1,7 +1,3 @@
-/*jslint browser: true*/
-/*jslint devel: true*/
-/*global d, player, collision, mouse, floor, canvas, ctx, wall, wall2*/
-
 var world = {
     keysDown: [],
     g: 0,
@@ -70,6 +66,6 @@ var world = {
                 // }
             }
         };
-        drawObjects([floor, player, mouse, wall, wall2]);
+        drawObjects([floor, player, enemy, mouse, wall, wall2]);
     }
 };
