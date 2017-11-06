@@ -1,15 +1,23 @@
+/*"esversion": 6;*/
+var viewport = new Rect (0, canvas.height / 2, canvas.width / 2, canvas.height / 2),
+    wall = new Wall(0, canvas.height - 200, 20, 100, 'red'),
+    wall1 = new Wall(4000, canvas.height - 200, 20, 100, 'green'),
+    wall2 = new Wall(700, canvas.height - 130, 100, 100, 'blue');
+    wall3 = new Wall(1000, canvas.height - 200, 20, 100, 'orange'),
+    wall4 = new Wall(1200, canvas.height - 130, 100, 100, 'purple');
+
+
+ctx.scale(2, 2);
+ctx.translate(0, -canvas.height / 2);
+
 var world = {
     keysDown: [],
     g: 0,
-    camera: {
-        x: 0,
-        y: 0,
-        w: canvas.width,
-        h: canvas.height
-    },
+    w: 5000,
+    h: 5000,
     update: function (delta) {
-        'use strict';
         var dx = player.spd * delta;
+        var x0 = player.x;
         if (world.keysDown[37] || world.keysDown[65]) {
             player.move('left', dx);
         }
@@ -46,26 +54,29 @@ var world = {
         } else {
             world.g += 1;
         }
+        // // var i = 0;
+        // // for (i; i < 2; i += 1) {
+        //     if(enemy1.x - player.x < viewport.w) {
+        //
+        //     }
+        // // }
     },
     render: function () {
         'use strict';
         var gradient,
             drawObjects;
 
-        ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-        gradient = ctx.createLinearGradient(0, floor.y, 0, floor.y + floor.h);
-        gradient.addColorStop(0, 'olive');
-        gradient.addColorStop(1, 'green');
-        ctx.fillStyle = gradient;
-        ctx.fillRect(floor.x, floor.y, floor.w, floor.h);
+        ctx.clearRect(viewport.x, viewport.y, viewport.w, viewport.h);
         drawObjects = function (objs) {
             var i = 0;
             for (i; i < objs.length; i += 1) {
-                // if(collision.check(objs[i], world.camera)) {
+                if(collision.check(objs[i], viewport)) {
                     objs[i].draw();
-                // }
+                }
             }
         };
-        drawObjects([floor, player, enemy, mouse, wall, wall2]);
+        drawObjects([floor, wall, wall1, wall2, wall3, wall4, enemy, enemy2, enemy3, mouse, player]);
+        mouse.draw();
+        viewport.draw();
     }
 };

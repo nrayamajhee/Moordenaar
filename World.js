@@ -1,12 +1,17 @@
 var canvas = document.querySelector("canvas");
 var ctx = canvas.getContext("2d");
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+
+function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+
+resizeCanvas();
 
 var floor = {
     x: 0,
     y: canvas.height - 100,
-    w: canvas.width,
+    w: 5000,
     h: 100,
     draw: function () {
         'use strict';
@@ -18,31 +23,29 @@ var floor = {
     }
 };
 
-var wall = {
-    x: 600,
-    y: canvas.height -  130,
-    w: 50,
-    h: 100,
-    color: 'brown',
-    draw: function () {
-        'use strict';
-        ctx.fillStyle = wall.color;
-        ctx.fillRect(wall.x, wall.y, wall.w, wall.h);
-    }
+var Rect = function(x, y, w, h) {
+    this.x = x;
+    this.y = y;
+    this.w = w;
+    this.h = h;
+    this.draw = function() {
+        ctx.strokeStyle = 'red';
+        ctx.rect(this.x, this.y, this.w, this.h);
+        ctx.stroke();
+    };
 };
 
-var wall2 = {
-    x: 50,
-    y: canvas.height - 320,
-    w: 50,
-    h: 100,
-    color: 'brown',
-    draw: function () {
-        'use strict';
-        ctx.fillStyle = wall2.color;
-        ctx.fillRect(wall2.x, wall2.y, wall2.w, wall2.h);
-    }
+var Wall = function(x, y, w, h, color) {
+    Rect.call(this, x, y, w, h);
+    this.color = color;
+    this.draw = function() {
+        ctx.fillStyle = this.color;
+        ctx.fillRect(this.x, this.y, this.w, this.h);
+    };
 };
+
+Wall.prototype = Object.create(Rect.prototype);
+Wall.prototype.constructor = Wall;
 
 var mouse = {
     x: canvas.width / 2,
