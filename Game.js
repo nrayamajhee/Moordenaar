@@ -1,82 +1,49 @@
-/*"esversion": 6;*/
-var viewport = new Rect (0, canvas.height / 2, canvas.width / 2, canvas.height / 2),
-    wall = new Wall(0, canvas.height - 200, 20, 100, 'red'),
-    wall1 = new Wall(4000, canvas.height - 200, 20, 100, 'green'),
-    wall2 = new Wall(700, canvas.height - 130, 100, 100, 'blue');
-    wall3 = new Wall(1000, canvas.height - 200, 20, 100, 'orange'),
-    wall4 = new Wall(1200, canvas.height - 130, 100, 100, 'purple');
+window.addEventListener("keydown", function (e) {
+    world.keysDown[e.keyCode] = true;
+}, false);
 
+window.addEventListener("keyup", function (e) {
+    delete world.keysDown[e.keyCode];
+}, false);
 
-ctx.scale(2, 2);
-ctx.translate(0, -canvas.height / 2);
+window.addEventListener("mousemove", function (e) {
+    var converted = viewport.convert(e.clientX, e.clientY);
+    mouse.x = converted[0];
+    mouse.y = converted[1];
+}, false);
 
-var world = {
-    keysDown: [],
-    g: 0,
-    w: 5000,
-    h: 5000,
-    update: function (delta) {
-        var dx = player.spd * delta;
-        var x0 = player.x;
-        if (world.keysDown[37] || world.keysDown[65]) {
-            player.move('left', dx);
-        }
-        if (world.keysDown[39] || world.keysDown[68]) {
-            player.move('right', dx);
-        }
-        if (world.keysDown[38] || world.keysDown[87]) {
-            player.move('up', dx);
-        }
-        if (world.keysDown[37] || world.keysDown[65] || world.keysDown[39] || world.keysDown[68]) {
-            player.walk();
-        } else {
-            player.stand();
-        }
-        if (mouse.buttons[2]) {
-            player.aim();
-            mouse.grow();
-        } else {
-            mouse.shrink();
-        }
-        if (mouse.buttons[2] && (mouse.buttons[0] || world.keysDown[32])) {
-            mouse.shoot = true;
-        } else {
-            mouse.shoot = false;
-        }
-    },
-    react: function () {
-        'use strict';
-        player.y += world.g;
-        var colliding = collision.checkAll(player,[floor, wall, wall2]);
-        if (colliding) {
-            player.y = colliding.y - player.h;
-            world.g = 0;
-        } else {
-            world.g += 1;
-        }
-        // // var i = 0;
-        // // for (i; i < 2; i += 1) {
-        //     if(enemy1.x - player.x < viewport.w) {
-        //
-        //     }
-        // // }
-    },
-    render: function () {
-        'use strict';
-        var gradient,
-            drawObjects;
+window.addEventListener("mousedown", function (e) {
+    mouse.buttons[e.button] = true;
+}, false);
 
-        ctx.clearRect(viewport.x, viewport.y, viewport.w, viewport.h);
-        drawObjects = function (objs) {
-            var i = 0;
-            for (i; i < objs.length; i += 1) {
-                if(collision.check(objs[i], viewport)) {
-                    objs[i].draw();
-                }
-            }
-        };
-        drawObjects([floor, wall, wall1, wall2, wall3, wall4, enemy, enemy2, enemy3, mouse, player]);
-        mouse.draw();
-        viewport.draw();
+window.addEventListener("mouseup", function (e) {
+    delete mouse.buttons[e.button];
+}, false);
+
+window.addEventListener('wheel', function (e) {
+    var dir = 1;
+    if (e.deltaY > 0) {
+        dir = -dir;
     }
-};
+    viewport.scroll(dir);
+}, false);
+
+window.addEventListener("resize", resizeCanvas, false);
+
+var then = Date.now();
+
+function main() {
+    'use strict';
+    var now = Date.now(),
+        delta = now - then;
+    world.update(delta / 1000);
+    world.react();
+    world.render();
+    ctx.fillStyle = 'red';
+    ctx.fillText((1000 / delta).toFixed(0), viewport.x + 5, viewport.y + 10);
+
+    then = now;
+    window.requestAnimationFrame(main);
+}
+
+main();

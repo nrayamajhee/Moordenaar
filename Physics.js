@@ -5,6 +5,24 @@ var collision = {
             first.x < second.x + second.w &&
             first.y < second.y + second.h;
     },
+    checkPoly: function (first, second) {
+        var i = 0,
+            slope = 0,
+            y = 0;
+        for (i; i < second.vertices.length - 1; i++) {
+            slope = (second.vertices[i + 1][1] - second.vertices[i][1]) / (second.vertices[i + 1][0] - second.vertices[i][0]);
+            y = second.vertices[i][1] + slope * (first.x - second.vertices[i][0]);
+            if (first.x > second.vertices[i][0] &&
+                first.x < second.vertices[i + 1][0] &&
+                first.y + first.h > y) {
+                    if (slope > 0) {
+                        y += slope * (first.w * 0.7);
+                    }
+                    return y;
+            }
+        }
+        return null;
+    },
     checkAll: function (one, others) {
         var i = 0;
         for (i; i < others.length; i += 1) {

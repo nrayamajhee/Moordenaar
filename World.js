@@ -1,91 +1,78 @@
-var canvas = document.querySelector("canvas");
-var ctx = canvas.getContext("2d");
+var viewport = new Viewport(),
+    wall = new Wall(1,1,0.1,2,'red');
+    wall2 = new Wall(47.9,4,0.1,2,'red');
+    wall1 = new Wall(2,5,1,1,'purple');
+    wall3 = new Wall(4,6,1,1,'tomato');
+    wall4 = new Wall(5,6,1,1,'yellow');
 
-function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-}
+var sky = ctx.createLinearGradient(0, 0, 0, canvas.height);
+    sky.addColorStop(0, 'SkyBlue');
+    sky.addColorStop(1, 'white');
 
-resizeCanvas();
-
-var floor = {
-    x: 0,
-    y: canvas.height - 100,
-    w: 5000,
-    h: 100,
-    draw: function () {
-        'use strict';
-        var gradient = ctx.createLinearGradient(0, floor.y, 0, floor.y + floor.h);
-        gradient.addColorStop(0, 'olive');
-        gradient.addColorStop(1, 'green');
-        ctx.fillStyle = gradient;
-        ctx.fillRect(floor.x, floor.y, floor.w, floor.h);
-    }
-};
-
-var Rect = function(x, y, w, h) {
-    this.x = x;
-    this.y = y;
-    this.w = w;
-    this.h = h;
-    this.draw = function() {
-        ctx.strokeStyle = 'red';
-        ctx.rect(this.x, this.y, this.w, this.h);
-        ctx.stroke();
-    };
-};
-
-var Wall = function(x, y, w, h, color) {
-    Rect.call(this, x, y, w, h);
-    this.color = color;
-    this.draw = function() {
-        ctx.fillStyle = this.color;
-        ctx.fillRect(this.x, this.y, this.w, this.h);
-    };
-};
-
-Wall.prototype = Object.create(Rect.prototype);
-Wall.prototype.constructor = Wall;
-
-var mouse = {
-    x: canvas.width / 2,
-    y: canvas.height / 2,
-    buttons: [],
-    radius: 10,
-    crosshair: 5,
-    shoot: false,
-    grow: function () {
-        'use strict';
-        mouse.crosshair += 1;
-        mouse.radius += 1;
-        if (mouse.radius > 20) {
-            mouse.radius = 20;
+var world = {
+    keysDown: [],
+    g: 0,
+    w: canvas.width * 5,
+    h: canvas.height,
+    update: function (delta) {
+        var dx = player.spd * delta;
+        if (world.keysDown[37] || world.keysDown[65]) {
+            player.move('left', dx);
         }
-        if (mouse.crosshair > 10) {
-            mouse.crosshair = 10;
+        if (world.keysDown[39] || world.keysDown[68]) {
+            player.move('right', dx);
+        }
+        if (world.keysDown[38] || world.keysDown[87]) {
+            player.move('up', dx);
+        }
+        if (world.keysDown[37] || world.keysDown[65] || world.keysDown[39] || world.keysDown[68]) {
+            player.walk();
+        } else {
+            player.stand();
+        }
+        if (mouse.buttons[2]) {
+            player.aim(mouse);
+            mouse.grow();
+        } else {
+            mouse.shrink();
+        }
+        if (mouse.buttons[2] && (mouse.buttons[0] || world.keysDown[32])) {
+            mouse.shoot = true;
+        } else {
+            mouse.shoot = false;
         }
     },
-    shrink: function () {
-        'use strict';
-        mouse.radius = 10;
-        mouse.crosshair = 5;
-    },
-    draw: function () {
-        'use strict';
-        ctx.strokeStyle = 'red';
-        ctx.beginPath();
-        ctx.lineWidth = 2;
-        ctx.arc(mouse.x, mouse.y, mouse.radius, 0, Math.PI * 2, true);
-        ctx.moveTo(mouse.x + mouse.crosshair, mouse.y);
-        ctx.lineTo(mouse.x - mouse.crosshair, mouse.y);
-        ctx.moveTo(mouse.x, mouse.y - mouse.crosshair);
-        ctx.lineTo(mouse.x, mouse.y + mouse.crosshair);
-        ctx.stroke();
-        if (mouse.shoot) {
-            ctx.beginPath();
-            ctx.moveTo(player.x + (player.w / 2), player.y + (player.h * 0.2));
-            ctx.lineTo(mouse.x, mouse.y);
-            ctx.stroke();
+    react: function () {
+        player.y += world.g;
+        var colliding = collision.checkPoly(player, floor);
+        if (colliding) {
+            player.y = colliding - player.h;
+            world.g = 0;
+        } else {
+            world.g += 1;
         }
+        for(var i = 0; i < enemies.length; i++) {
+            if (Math.abs(enemies[i].x - player.x) < canvas.width / 2) {
+                enemies[i].aim(player);
+            } else {
+                enemies[i].stand();
+            }
+        }
+    },
+    render: function () {
+        ctx.clearRect(viewport.x, viewport.y, viewport.w, viewport.h);
+        ctx.fillStyle = sky;
+        ctx.fillRect(viewport.x, viewport.y, viewport.w, viewport.h);
+        var drawObjects = function (objs) {
+            for (var i = 0; i < objs.length; i++) {
+                if(collision.check(objs[i], viewport)) {
+                    objs[i].draw();
+                }
+            }
+        };
+        drawObjects([wall, wall1, wall2, wall3, wall4, player]);
+        drawObjects(enemies);
+        floor.draw();
+        mouse.draw();
     }
 };

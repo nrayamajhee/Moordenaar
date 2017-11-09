@@ -3,14 +3,23 @@
     <head>
         <meta charset="utf-8">
         <title>Moordenaar</title>
-        <link rel="stylesheet" href="World.css">
+        <style>
+            body {
+                margin: 0;
+            }
+            canvas {
+                display: block;
+                cursor: none;
+            }
+        </style>
     </head>
     <body>
         <canvas oncontextmenu="return false;"></canvas>
         <script src="Physics.js"></script>
-        <script src="Audio.js"></script>
+        <script src="Game_objs.js"></script>
+        <script src="Mouse.js"></script>
+        <script src="Player.js"></script>
         <script src="World.js"></script>
         <script src="Game.js"></script>
-        <script src="Player.js"></script>
     </body>
 </html>
