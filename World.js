@@ -1,9 +1,10 @@
 var viewport = new Viewport(),
-    wall = new Wall(1,1,0.1,2,'red');
-    wall2 = new Wall(47.9,4,0.1,2,'red');
-    wall1 = new Wall(2,5,1,1,'purple');
-    wall3 = new Wall(4,6,1,1,'tomato');
-    wall4 = new Wall(5,6,1,1,'yellow');
+    wall = new Wall(1,1,0.1,2,'red'),
+    wall2 = new Wall(47.8,4,0.1,2,'red'),
+    level = new Level();
+
+var enemies = createEnemies();
+var player = new Player(2.2, 0, 0.15, 1.5);
 
 var sky = ctx.createLinearGradient(0, 0, 0, canvas.height);
     sky.addColorStop(0, 'SkyBlue');
@@ -12,8 +13,13 @@ var sky = ctx.createLinearGradient(0, 0, 0, canvas.height);
 var world = {
     keysDown: [],
     g: 0,
-    w: canvas.width * 5,
+    w: canvas.width * 5.5,
     h: canvas.height,
+    alive: enemies.length,
+    over: 'alive',
+    alert: false,
+    radius: 0.5,
+    time: 0,
     update: function (delta) {
         var dx = player.spd * delta;
         if (world.keysDown[37] || world.keysDown[65]) {
@@ -25,54 +31,101 @@ var world = {
         if (world.keysDown[38] || world.keysDown[87]) {
             player.move('up', dx);
         }
+        if (world.keysDown[82]) {
+            if (world.over || world.alive === 0)
+                window.location.reload();
+        }
         if (world.keysDown[37] || world.keysDown[65] || world.keysDown[39] || world.keysDown[68]) {
             player.walk();
         } else {
             player.stand();
         }
-        if (mouse.buttons[2]) {
+        if (mouse.buttons[2] || world.keysDown[16]) {
             player.aim(mouse);
             mouse.grow();
+            if (mouse.buttons[0] || world.keysDown[32]) {
+                player.shoot();
+            } else {
+                player.hold();
+            }
         } else {
             mouse.shrink();
-        }
-        if (mouse.buttons[2] && (mouse.buttons[0] || world.keysDown[32])) {
-            mouse.shoot = true;
-        } else {
-            mouse.shoot = false;
+            player.aiming = false;
         }
     },
     react: function () {
         player.y += world.g;
-        var colliding = collision.checkPoly(player, floor);
+        var colliding = collision.checkPoly(player, level);
         if (colliding) {
             player.y = colliding - player.h;
             world.g = 0;
         } else {
             world.g += 1;
         }
+        console.log(world.radius);
+        world.radius = 0.05 + player.x / world.w;
+        // console.log(world.radius);
         for(var i = 0; i < enemies.length; i++) {
-            if (Math.abs(enemies[i].x - player.x) < canvas.width / 2) {
-                enemies[i].aim(player);
+            if (Math.abs(enemies[i].x - player.x) < canvas.width * world.radius &&
+                enemies[i].fall === 'no') {
+                if(enemies[i].x > 3 * canvas.width || world.alert) {
+                    enemies[i].shoot();
+                    buildup.play();
+                }
+                else {
+                    enemies[i].aim(player);
+                }
             } else {
+                enemies[i].hold();
                 enemies[i].stand();
             }
         }
+        if (player.fall != 'no') {
+            world.over = 'lost';
+            if (!buildup.paused) {
+                buildup.pause();
+                gameover.play();
+            }
+        }
+        if (world.alive === 0 && world.over != 'lost') {
+            world.over = 'won';
+            rhythm.play();
+        }
     },
     render: function () {
+        ctx.save();
         ctx.clearRect(viewport.x, viewport.y, viewport.w, viewport.h);
         ctx.fillStyle = sky;
         ctx.fillRect(viewport.x, viewport.y, viewport.w, viewport.h);
         var drawObjects = function (objs) {
             for (var i = 0; i < objs.length; i++) {
-                if(collision.check(objs[i], viewport)) {
-                    objs[i].draw();
-                }
+                objs[i].draw();
             }
         };
-        drawObjects([wall, wall1, wall2, wall3, wall4, player]);
+        level.drawMountains();
+        level.draw();
+        player.draw();
+        level.drawGrass();
         drawObjects(enemies);
-        floor.draw();
+        level.drawTrees();
+        // drawObjects([wall, wall2]);
         mouse.draw();
+        if (world.over === 'lost') {
+            credits('Game Over');
+        } else if (world.over === 'won') {
+            credits('All enemies dead!');
+        }
+        ctx.clip();
+        ctx.restore();
+    },
+    debug: function(fps) {
+        ctx.fillStyle = 'red';
+        ctx.font = '12px sans';
+        ctx.textBaseline = 'top';
+        ctx.fillText("fps: ", viewport.x + 10, viewport.y + 10);
+        for(var i = 0; i < fps.length; i++) {
+            ctx.fillText(fps[i], 40 + viewport.x + i * 20, viewport.y + 10);
+        }
+        ctx.fillText("Enemies: " + this.alive + ", Bullets: " + player.bullets, viewport.x + viewport.w - 150, viewport.y + 10);
     }
 };

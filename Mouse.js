@@ -4,7 +4,9 @@ var mouse = {
     buttons: [],
     radius: 10,
     crosshair: 5,
-    shoot: false,
+    ready: true,
+    shooting: false,
+    freeze: false,
     grow: function () {
         'use strict';
         mouse.crosshair += 1;
@@ -17,12 +19,17 @@ var mouse = {
         }
     },
     shrink: function () {
-        'use strict';
         mouse.radius = 10;
         mouse.crosshair = 5;
     },
     draw: function () {
-        ctx.strokeStyle = 'red';
+        if (mouse.radius > 15) {
+            ctx.strokeStyle = 'red';
+        } else if (mouse.freeze) {
+            ctx.strokeStyle = 'blue';
+        } else {
+            ctx.strokeStyle = 'green';
+        }
         ctx.beginPath();
         ctx.lineWidth = 2;
         ctx.fillStyle = 'rgba(0,0,0,0.2)';
@@ -33,11 +40,5 @@ var mouse = {
         ctx.moveTo(mouse.x, mouse.y - mouse.crosshair);
         ctx.lineTo(mouse.x, mouse.y + mouse.crosshair);
         ctx.stroke();
-        if (mouse.shoot) {
-            ctx.beginPath();
-            ctx.moveTo(player.x + (player.w / 2), player.y + (player.h * 0.2));
-            ctx.lineTo(mouse.x, mouse.y);
-            ctx.stroke();
-        }
     }
 };

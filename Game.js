@@ -3,6 +3,10 @@ window.addEventListener("keydown", function (e) {
 }, false);
 
 window.addEventListener("keyup", function (e) {
+    if (e.keyCode === 70){
+    console.log(mouse.freeze);
+        mouse.freeze = !mouse.freeze;
+    }
     delete world.keysDown[e.keyCode];
 }, false);
 
@@ -25,12 +29,14 @@ window.addEventListener('wheel', function (e) {
     if (e.deltaY > 0) {
         dir = -dir;
     }
-    viewport.scroll(dir);
+    // viewport.scroll(dir);
 }, false);
 
 window.addEventListener("resize", resizeCanvas, false);
 
 var then = Date.now();
+start = then;
+var fps = [];
 
 function main() {
     'use strict';
@@ -39,8 +45,11 @@ function main() {
     world.update(delta / 1000);
     world.react();
     world.render();
-    ctx.fillStyle = 'red';
-    ctx.fillText((1000 / delta).toFixed(0), viewport.x + 5, viewport.y + 10);
+    fps.push((1000 / delta).toFixed(0));
+    if (fps.length > 5) {
+        fps = [];
+    }
+    world.debug(fps);
 
     then = now;
     window.requestAnimationFrame(main);
