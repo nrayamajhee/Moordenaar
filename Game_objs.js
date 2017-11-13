@@ -47,7 +47,7 @@ class Viewport extends Box {
         ctx.stroke();
     }
     convert(x,y) {
-        return [Math.floor(this.x) + Math.floor(x * this.scale), Math.floor(this.y) + Math.floor(y * this.scale)];
+        return[Math.floor(this.x + x - canvas.offsetLeft), y];
     }
     scroll(dir) {
         if (dir > 0) {
@@ -78,7 +78,8 @@ class Level {
         this.trees2 = new ImageLayer("img/trees2.png");
         this.trees3 = new ImageLayer("img/trees3.png");
         this.trees4 = new ImageLayer("img/trees4.png");
-        this.house = new ImageLayer("img/house.png");
+        this.house1 = new ImageLayer("img/house1.png");
+        this.house2 = new ImageLayer("img/house2.png");
         this.mountains = new ImageLayer("img/mountains.png");
         this.range = new ImageLayer("img/range.png");
         this.vertices = [
@@ -119,10 +120,11 @@ class Level {
     drawMountains() {
         this.mountains.draw();
         this.range.draw();
+        this.house1.draw();
     }
     drawGrass() {
+        this.house2.draw();
         this.grass.draw();
-        this.house.draw();
     }
     drawTrees() {
         this.trees1.draw();
@@ -134,14 +136,14 @@ class Level {
 function credits(msg) {
     ctx.fillStyle = 'red';
     ctx.strokeStyle = 'white';
-    ctx.font = "128px 'Barlow Condensed', sans-serif";
+    ctx.font = "Bold 128px 'Barlow Condensed', sans-serif";
     ctx.fillText("Moordenaar", viewport.x + viewport.w * 0.2, viewport.y + viewport.h * 0.2);
     ctx.strokeText("Moordenaar", viewport.x + viewport.w * 0.2, viewport.y + viewport.h * 0.2);
     ctx.fillText(msg, viewport.x + viewport.w * 0.2, viewport.y + viewport.h * 0.4);
     ctx.strokeText(msg, viewport.x + viewport.w * 0.2, viewport.y + viewport.h * 0.4);
     ctx.lineWidth = 1;
     ctx.strokeStyle = 'black';
-    ctx.font = "48px 'Aileron', sans-serif";
+    ctx.font = "Bold 48px 'Barlow Condensed', sans-serif";
     ctx.fillText("Time: " + world.time.toFixed(0) + " sec, Bullets: " + player.bullets.toFixed(0) + ".", viewport.x + viewport.w * 0.2, viewport.y + viewport.h * 0.6);
     ctx.strokeText("Time: " + world.time.toFixed(0) + " sec, Bullets: " + player.bullets.toFixed(0)  + ".", viewport.x + viewport.w * 0.2, viewport.y + viewport.h * 0.6);
     ctx.fillText("Press R to replay.", viewport.x + viewport.w * 0.2, viewport.y + viewport.h * 0.7);

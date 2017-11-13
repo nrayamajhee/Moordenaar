@@ -38,14 +38,15 @@ class Bot extends Box {
         this.timer = 0;
         this.target = null;
     }
-    walk () {
+    walk (dx) {
+        console.log(dx);
         var limbs = [this.upper, this.lower],
             i;
         for (i = 0; i < limbs.length; i += 1) {
             if (limbs[i].dir) {
-                limbs[i].deg += 5;
+                limbs[i].deg += dx / 2;
             } else {
-                limbs[i].deg -= 5;
+                limbs[i].deg -= dx / 2;
             }
             if (limbs[i].deg > 50) {
                 limbs[i].deg = 50;
@@ -212,7 +213,8 @@ class Player extends Bot {
             }
         } else if (dir === 'up') {
             colliding = collision.checkAll(player,[wall, wall2]);
-            this.y -= dx;
+            // escape velocity
+            this.y -= 7;
             if (colliding) {
                 this.y = colliding.y + colliding.h;
             }
@@ -223,10 +225,10 @@ class Player extends Bot {
 class Enemy extends Bot {
     constructor(x,y,w,h) {
         super(x,y,w,h);
-        this.timer = 2500;
+        this.timer = 500;
     }
     shoot() {
-        if (this.timer < 10) {
+        if (this.timer < 5) {
             if (this.timer < 0) {
                 world.alert = true;
                 this.target = {x: rand(player.x - 20, player.x + 20), y: rand(player.y - 20, player.y + player.h), w:0, h:0};
@@ -240,7 +242,7 @@ class Enemy extends Bot {
                 } else if(collision.check(this.target, {x:player.x, y:player.y + player.h / 2, w:player.w, h: player.h / 2})) {
                     player.fall = dir ? 'left' : 'right';
                 }
-                this.timer = 100;
+                this.timer = 50;
                 gunshot.play();
             }
         } else {
@@ -256,10 +258,10 @@ function createEnemies() {
     enemies.push(new Enemy(23, 6.3, 0.2, 1.7));
     enemies.push(new Enemy(28, 6.4, 0.15, 1.6));
     enemies.push(new Enemy(34.5, 4.4, 0.2, 1.6));
-    enemies.push(new Enemy(36, 2.5, 0.15, 1.5));
-    enemies.push(new Enemy(40, 2.3, 0.2, 1.7));
     enemies.push(new Enemy(37, 4.4, 0.2, 1.6));
     enemies.push(new Enemy(39, 4.4, 0.2, 1.6));
+    enemies.push(new Enemy(40, 2.5, 0.15, 1.5));
+    enemies.push(new Enemy(44, 2.3, 0.2, 1.7));
     for(var i = 0; i < 4; i++) {
         enemies.push(new Enemy(42 + i * 1.6, 4.4, 0.15, 1.5));
     }

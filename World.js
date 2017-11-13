@@ -1,6 +1,6 @@
 var viewport = new Viewport(),
-    wall = new Wall(1,1,0.1,2,'red'),
-    wall2 = new Wall(47.8,4,0.1,2,'red'),
+    wall = new Wall(0,0,1.1,2.5,'red'),
+    wall2 = new Wall(47.8,4,1,2,'red'),
     level = new Level();
 
 var enemies = createEnemies();
@@ -36,7 +36,7 @@ var world = {
                 window.location.reload();
         }
         if (world.keysDown[37] || world.keysDown[65] || world.keysDown[39] || world.keysDown[68]) {
-            player.walk();
+            player.walk(dx);
         } else {
             player.stand();
         }
@@ -53,7 +53,7 @@ var world = {
             player.aiming = false;
         }
     },
-    react: function () {
+    react: function (d) {
         player.y += world.g;
         var colliding = collision.checkPoly(player, level);
         if (colliding) {
@@ -61,6 +61,9 @@ var world = {
             world.g = 0;
         } else {
             world.g += 1;
+        }
+        if (player.x > 3 * canvas.width) {
+            buildup.play();
         }
         console.log(world.radius);
         world.radius = 0.05 + player.x / world.w;
@@ -70,7 +73,6 @@ var world = {
                 enemies[i].fall === 'no') {
                 if(enemies[i].x > 3 * canvas.width || world.alert) {
                     enemies[i].shoot();
-                    buildup.play();
                 }
                 else {
                     enemies[i].aim(player);
@@ -103,10 +105,10 @@ var world = {
             }
         };
         level.drawMountains();
+        drawObjects(enemies);
         level.draw();
         player.draw();
         level.drawGrass();
-        drawObjects(enemies);
         level.drawTrees();
         // drawObjects([wall, wall2]);
         mouse.draw();

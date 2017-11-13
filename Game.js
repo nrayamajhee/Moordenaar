@@ -41,11 +41,11 @@ var fps = [];
 function main() {
     'use strict';
     var now = Date.now(),
-        delta = now - then;
-    world.update(delta / 1000);
-    world.react();
-    world.render();
-    fps.push((1000 / delta).toFixed(0));
+        d = (now - then) / 1000;
+    world.update(d);
+    world.react(d);
+    world.render(d);
+    fps.push((1 / d).toFixed(0));
     if (fps.length > 5) {
         fps = [];
     }
