@@ -4,171 +4,71 @@
         <meta charset="utf-8">
         <title>Moordenaar</title>
         <link href="https://fonts.googleapis.com/css?family=Barlow+Condensed|Lato" rel="stylesheet">
-        <style>
-            body {
-                margin: 0;
-                background: #222;
-                color: #222;
-                font-family: 'Lato', sans-serif;
-                font-size: 16px;
-            }
-            canvas {
-                display: block;
-                cursor: none;
-            }
-            game {
-                display: block;
-                width: 1200px;
-                margin: 0 auto;
-            }
-            docs {
-                display: block;
-                background-color: #eee;
-                padding: 20px;
-            }
-            dt, dd {
-                margin: 0 10px;
-                padding: 10px;
-                float: left;
-            }
-            dt {
-                clear: left;
-                margin-left: 50px;
-                margin-bottom: 10px;
-            }
-            p {
-                clear: left;
-            }
-            dt, h3, .highlight {
-                background-color: white;
-                padding: 10px;
-                color: #222
-            }
-            h3 {
-                display: inline-block;
-            }
-            p.highlight {
-                display: inline-block;
-                padding: 10px;
-                margin: 0;
-            }
-            article {
-                position: relative;
-                margin-bottom: 20px;
-            }
-            article h3 {
-                position: absolute;
-                top: 0;
-                left: 0;
-                margin: 0;
-            }
-            article div {
-                position: absolute;
-                background: rgba(0,0,0,0.5);
-                width: calc(100% - 20px);
-                padding: 10px;
-                color: white;
-                bottom: 0;
-            }
-            article img {
-                max-width: 100%;
-                display: block;
-            }
-        </style>
+        <link href="css/Game.css" rel="stylesheet">
     </head>
     <body>
-        <game>
-            <canvas oncontextmenu="return false;"></canvas>
-            <docs>
-                <h1>Moordenaar</h1>
-                <h2>by Nishan Rayamajhee</h2>
-                <h2>How do I run it?</h2>
-                <p>Well, it's running up above!</p>
-                <p>If you want to run a local copy, download the entire project from <a href="https://github.com/nrayamajhee/Youddha">github</a>.</p>
-                <p>Download the zip, extract, and just open up Player.html with your web browser.</a><p>
-                <p>This game is hosted at <a href="http://nishan.rayamajhee.com/Moordenaar">http://nishan.rayamajhee.com/Moordenaar</a>.</p>
-                <h2>How do I play it?</h2>
-                <p>You play as a retired assasin who has to save himself and his home from invaders who are there to kill him.</p>
-                <p>The goal is to eliminate all enemies without dying.</p>
-                <p>Keyboard Controls:</p>
-                <dl>
-                    <dt>A / LEFT arrow key</dt>
-                        <dd>Move the player left</dd>
-                    <dt>D / RIGHT arrow key</dt>
-                        <dd>Move the player right</dd>
-                    <dt>W / UP arrow key</dt>
-                        <dd>Jump</dd>
-                    <dt>SHIFT key</dt>
-                        <dd>Aim<dd>
-                    <dt>SPACE bar</dt>
-                        <dd>Shoot!<dd>
-                    <dt>F key</dt>
-                        <dd>Freeze the gun scope.<dd>
-                </dl>
-                <p>Mouse Controls:</p>
-                <dl>
-                    <dt>MOUSEMOVE</dt>
-                        <dd>Move the gun around<dd>
-                    <dt>RIGHT mouse click</dt>
-                        <dd>Aim<dd>
-                    <dt>LEFT mouse click</dt>
-                        <dd>Shoot!<dd>
-                </dl>
-                <p>Note: You cannot shoot withought aiming first.</p>
-                <h2>How do I win the game?</h2>
-                <article>
-                    <h3>Slow and steady</h3>
-                    <img src="img/2.png">
-                    <div>
-                        <p>Slowling moving ahead might give the player an edge when it comes to wining the game. Enenmies have a range from where they can shoot. This can be exploted to win the game slowly and steadily.</p>
-                        <p>You can also use the freeze gun feature to lock the target to an enemy and shoot at will. Just press <span class="highlight">F</span> key to enable it. The scope will turn blue if it is enabled.</p>
-                    </div>
-                </article>
-                <article>
-                    <h3>Rampage</h3>
-                    <img src="img/1.png">
-                    <div>
-                        <p>If you hold down both the <span class="highlight">LEFT</span> & <span class="highlight">RIGHT</span> mouse buttons or the SHIFT & SPACE keys, the player will repeatedly shoot.</p>
-                        <p>You can then move the mouse to hover over the enemies and kill them.</p>
-                        <p>Moving back and forth will help in dodging enemy fires.</p>
-                    </div>
-                </article>
-                <h2>How did you make it?</h2>
-                <p>The entire game was wirtten in HTML5 and javascript. The game is drawn using the canvas API.<p>
-                <p>The player, floor, and the sky is drawn calling canvas context in javascipt. However, all the sprites have been compositioned, and painted using <a href="https://www.gimp.org">GIMP</a>.
-                <p>I used the following textures and sounds</p>
-                <h3>Graphics:</h3>
-                <ul>
-                    <li>Tree textures by 'Bleed' from <a href="https://opengameart.org/content/tree-collection-v26-bleeds-game-art">opengameart.org/content/tree-collection-v26-bleeds-game-art</a>.<br>It is licensed under CC-BY 3.0</a></li>
-                    <li>Backdrop picture by 'AquilaSol' downloaded from <a href="https://opengameart.org/content/background-set">opengameart.org/content/background-set</a>.<br>It is licensed under CC-BY_SA 3.0</li>
-                    <li>Grass brush textures by 'charfade' from <a href="https://charfade.deviantart.com/art/The-Ultimate-Grass-Brush-Set-108728221">charfade.deviantart.com/art/The-Ultimate-Grass-Brush-Set-108728221</a></li>
-                    <li>Bus and Car image from <a href="https://www.pinterest.com/pin/236157574190692980/">www.pinterest.com/pin/236157574190692980</a> and <a href="http://carpng.com/ford-fiesta-sedan-side-view-7148/">carpng.com/ford-fiesta-sedan-side-view-7148</a></li>
-                </ul>
-                <h3>Audio:</h3>
-                <ul>
-                    <li>Gunshot sound by Michael Klier downloaded from <a href="https://opengameart.org/content/futuristic-sniper-rifle">opengameart.org/content/futuristic-sniper-rifle</a>.<br>It is licensed under CC-BY_SA 3.0</li>
-                    <li>Forest sound by koertes downloaded from <a href="https://opengameart.org/content/birdsong-background-loop">opengameart.org/content/birdsong-background-loop</a>.<br>It is licensed under CC-BY_SA 3.0</li>
-                    <li>Game sounds by Cafofo downloaded from <a href="https://opengameart.org/content/unreleased-game-music-pack">opengameart.org/content/unreleased-game-music-pack</a>.
-                        <br>I used the
-                        <ul>
-                            <li>Cafofo - MUSIC - CSI</li>
-                            <li>Cafofo - MUSIC - CSI (Variation)</li>
-                            <li>Cafofo - MUSIC - Shameless Reggae</li>
-                        </ul>
-                        files.
-                        <br>All of them are licensed under CC-BY3.0
-                    </li>
-                </ul>
-                <p><a href="https://developer.mozilla.org/en-US/docs/Games">Mozilla's MDN</a> is a good place to learn about various web APIs for Game Developement.</p>
-                <p><a href="https://www.youtube.com/user/shiffman">Coding Train</a>, and <a href="https://www.youtube.com/user/codingmath/playlists">Coding Math</a> are two resourceful Youtube channels for learning how to program interactive object in javascript.</p>
-            </docs>
-        </game> 
-        <script src="Physics.js"></script>
-        <script src="Audio.js"></script>
-        <script src="Game_objs.js"></script>
-        <script src="Mouse.js"></script>
-        <script src="Player.js"></script>
-        <script src="World.js"></script>
-        <script src="Game.js"></script>
+        <canvas oncontextmenu="return false;"></canvas>
+        <docs>
+            <h1>Moordenaar</h1>
+            <h2>by Nishan Rayamajhee</h2>
+            <h3>Controls:</h3>
+            <table>
+                <tr>
+                    <th>Move left</th>
+                    <td>A</td>
+                    <td>LEFT</td>
+                </tr>
+                <tr>
+                    <th>Move Right</th>
+                    <td>D</td>
+                    <td>RIGHT</td>
+                </tr>
+                <tr>
+                    <th>Jump</th>
+                    <td>W</td>
+                    <td>UP</td>
+                </tr>
+                <tr>
+                    <th>Aim</th>
+                    <td>SHIFT</td>
+                    <td>RIGHT Mouse click</td>
+                </tr>
+                <tr>
+                    <th>Shoot</th>
+                    <td>SPACE</td>
+                    <td>LEFT Mouse click</td>
+                </tr>
+            </table>
+            <h2>Source</h2>
+            <a href="https://github.com/nrayamajhee/Youddha">GitHub</a>
+            <p>This game is a free and open source software licensed under GPLv3. The game uses assets from the following assets.</p>
+            <h3>Graphics:</h3>
+            <ul>
+                <li>Tree textures by 'Bleed' from <a href="https://opengameart.org/content/tree-collection-v26-bleeds-game-art">opengameart.org/content/tree-collection-v26-bleeds-game-art</a>.<br>It is licensed under CC-BY 3.0</a></li>
+                <li>Backdrop picture by 'AquilaSol' downloaded from <a href="https://opengameart.org/content/background-set">opengameart.org/content/background-set</a>.<br>It is licensed under CC-BY_SA 3.0</li>
+                <li>Grass brush textures by 'charfade' from <a href="https://charfade.deviantart.com/art/The-Ultimate-Grass-Brush-Set-108728221">charfade.deviantart.com/art/The-Ultimate-Grass-Brush-Set-108728221</a></li>
+                <li>Bus and Car image from <a href="https://www.pinterest.com/pin/236157574190692980/">www.pinterest.com/pin/236157574190692980</a> and <a href="http://carpng.com/ford-fiesta-sedan-side-view-7148/">carpng.com/ford-fiesta-sedan-side-view-7148</a></li>
+            </ul>
+            <h3>Audio:</h3>
+            <ul>
+                <li>Gunshot sound by Michael Klier: <a href="https://opengameart.org/content/futuristic-sniper-rifle">opengameart.org/content/futuristic-sniper-rifle</a>, licensed under CC-BY_SA 3.0.</li>
+                <li>Forest sound by koertes: <a href="https://opengameart.org/content/birdsong-background-loop">opengameart.org/content/birdsong-background-loop</a>, licensed under CC-BY_SA 3.0.</li>
+                <li>Game sounds by Cafofo: <a href="https://opengameart.org/content/unreleased-game-music-pack">opengameart.org/content/unreleased-game-music-pack</a>, licensed under CC-BY 3.0.
+                    <br>I used the following sound files:
+                    <ul>
+                        <li>Cafofo - MUSIC - CSI</li>
+                        <li>Cafofo - MUSIC - CSI (Variation)</li>
+                        <li>Cafofo - MUSIC - Shameless Reggae</li>
+                    </ul>
+                </li>
+            </ul>
+        </docs>
+        <script src="js/Physics.js"></script>
+        <script src="js/Audio.js"></script>
+        <script src="js/Game_objs.js"></script>
+        <script src="js/Mouse.js"></script>
+        <script src="js/Player.js"></script>
+        <script src="js/World.js"></script>
+        <script src="js/Game.js"></script>
     </body>
 </html>

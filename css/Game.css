@@ -1,0 +1,52 @@
+body {
+    margin: 0;
+    background: #222;
+    color: #222;
+    font-family: 'Lato', sans-serif;
+    font-size: 16px;
+}
+canvas {
+    position: fixed;
+    z-index: -1;
+    display: block;
+    cursor: none;
+}
+docs {
+    display: block;
+    max-width: 960px;
+    margin: 0 auto;
+    background-color: rgba(255,255,255,0.8);
+    padding: 20px;
+}
+docs.hidden {
+    display: none;
+}
+canvas {
+    transition: filter 1s;
+    /*filter: blur(0);*/
+}
+canvas.inactive {
+    filter: blur(10px);
+}
+h3, p {
+    margin: 1rem 0;
+}
+h3 {
+    display: inline-block;
+    background-color: white;
+    padding: 10px;
+    color: #222
+}
+table {
+    background: DeepSkyBlue;
+    min-width: 50%;
+    text-align: left;
+    border-collapse: collapse;
+}
+th, td {
+    line-height: 1;
+    padding: 10px;
+}
+tr:nth-child(2n+1) {
+    background: SkyBlue;
+}
