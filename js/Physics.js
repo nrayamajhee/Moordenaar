@@ -5,6 +5,13 @@ function rand(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 var collision = {
+	checkPoint: function(first, second) {
+//		console.log(first + second);
+		return first.x > second.x &&
+			first.x < second.x + second.w &&
+			first.y > second.y &&
+			first.y < second.y + second.h;
+	},
     check: function (first, second) {
         return first.x + first.w > second.x &&
             first.y + first.h > second.y &&

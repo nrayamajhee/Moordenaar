@@ -1,13 +1,15 @@
-/*jshint esversion: 6*/
 let docs = {
     el: document.querySelector('docs'),
+	shown: false,
     show: function() {
         canvas.classList.add('inactive');
         this.el.classList.remove('hidden');
+		this.shown = true;
     },
     hide: function() {
         this.el.classList.add('hidden');
         canvas.classList.remove('inactive');
+		this.shown = false;
         main();
     },
     toggle: function() {
@@ -37,9 +39,15 @@ function addEvents() {
         var converted = viewport.convert(e.clientX, e.clientY);
         mouse.x = converted[0];
         mouse.y = converted[1];
+		if(docs.shown) {
+			document.querySelector('body').style.perspectiveOrigin = (window.innerWidth / 2 - mouse.x)  + "%" + (window.innerHeight / 2 - mouse.y) + "%";
+		}
     }, false);
     window.addEventListener('mousedown', function (e) {
         mouse.buttons[e.button] = true;
+		if(!collision.checkPoint(mouse, {x: docs.el.offsetLeft,y: docs.el.offsetTop,w: docs.el.offsetWidth, h: docs.el.offsetHeight})){
+			docs.hide();
+		};
     }, false);
     window.addEventListener('mouseup', function (e) {
         delete mouse.buttons[e.button];
@@ -79,6 +87,6 @@ var fps = [];
 
 window.addEventListener('load', function() {
     addEvents();
-    docs.hide();
+	docs.show();
     main();
 }, false);
